@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>qtxalan | Hub</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #141b29 0%, #0b0f17 100%);
+            color: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 60px 20px;
+            position: relative;
+        }
+
+        /* Sprachumschalter oben rechts */
+        .lang-switch {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 100;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #8c9ba5;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background: #00e676;
+            color: #0b0f17;
+            box-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
+        }
+
+        .header-zone {
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 700px;
+        }
+
+        .signal-badge {
+            background: rgba(0, 230, 118, 0.1);
+            color: #00e676;
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.1);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff 0%, #a2b4c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description {
+            color: #8c9ba5;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 900px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            padding: 35px;
+            text-decoration: none;
+            color: inherit;
+            flex: 1;
+            min-width: 280px;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 230, 118, 0.4);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 230, 118, 0.05);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .project-card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .project-card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .action-link {
+            margin-top: auto;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #00e676;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.2s ease;
+        }
+
+        .project-card:hover .action-link {
+            gap: 14px;
+        }
+
+        .project-card.upcoming {
+            opacity: 0.5;
+            border-style: dashed;
+        }
+        .project-card.upcoming:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: none;
+            transform: none;
+        }
+        .project-card.upcoming .action-link {
+            color: #64748b;
+        }
+
+        /* Sorgt dafür, dass die Elemente die Struktur nicht zerstören */
+        .lang-text {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Language Selector -->
+    <div class="lang-switch">
+        <button id="btn-de" class="lang-btn active" onclick="setLanguage('de')">DE</button>
+        <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">EN</button>
+    </div>
+
+    <div class="header-zone">
+        <!-- Badge -->
+        <div class="signal-badge">
+            <span class="lang-text" data-lang="de">📡 Online-Zentrale</span>
+            <span class="lang-text" data-lang="en">📡 Online Hub</span>
+        </div>
+        
+        <!-- Überschrift -->
+        <h1>
+            <span class="lang-text" data-lang="de">Willkommen auf meinem Hub</span>
+            <span class="lang-text" data-lang="en">Welcome to my Hub</span>
+        </h1>
+        
+        <!-- Untertitel -->
+        <p class="description">
+            <span class="lang-text" data-lang="de">Hier findest du meine Web-Anwendungen, Scripte und aktuellen Open-Source-Projekte auf GitHub.</span>
+            <span class="lang-text" data-lang="en">Here you can find my web applications, scripts, and ongoing open-source projects hosted on GitHub.</span>
+        </p>
+    </div>
+
+    <div class="container">
+        <!-- Hauptprojekt: FM-DX Monitor -->
+        <a href="https://qtxalan.github.io/fmdx-monitor" class="project-card">
+            <span class="card-icon">📻</span>
+            <h2>FM-DX Monitor</h2>
+            <p>
+                <span class="lang-text" data-lang="de">Echtzeit-Signalauswertung, RDS-Logs und Frequenzbeobachtungen direkt gekoppelt mit der API des NoobishSVK-Webservers.</span>
+                <span class="lang-text" data-lang="en">Real-time signal diagnostics, RDS logging, and band tracking powered directly by NoobishSVK's webserver API.</span>
+            </p>
+            <span class="action-link">
+                <span class="lang-text" data-lang="de">Monitor öffnen &rarr;</span>
+                <span class="lang-text" data-lang="en">Open Monitor &rarr;</span>
+            </span>
+        </a>
+
+        <!-- Platzhalter für das nächste Projekt -->
+        <div class="project-card upcoming">
+            <span class="card-icon">⚙️</span>
+            <h2>
+                <span class="lang-text" data-lang="de">Nächstes Projekt</span>
+                <span class="lang-text" data-lang="en">Next Project</span>
+            </h2>
+            <p>
+                <span class="lang-text" data-lang="de">Hier entsteht in Kürze eine weitere Anwendung, Statistiken oder ein praktisches Tool für mein Setup.</span>
+                <span class="lang-text" data-lang="en">A brand new application, statistics dashboard, or useful utility for my setup will appear here soon.</span>
+            </p>
+            <span class="action-link">
+                <span class="lang-text" data-lang="de">In Vorbereitung</span>
+                <span class="lang-text" data-lang="en">Coming Soon</span>
+            </span>
+        </div>
+    </div>
+
+    <script>
+        function setLanguage(lang) {
+            // Alle Textelemente holen
+            const elements = document.querySelectorAll('.lang-text');
+            
+            elements.forEach(el => {
+                if (el.getAttribute('data-lang') === lang) {
+                    // Falls es ein Flex-Container-Element ist (wie der action-link), nutzen wir flex, sonst block
+                    if (el.parentElement.classList.contains('action-link')) {
+                        el.style.display = 'flex';
+                    } else {
+                        el.style.display = 'block';
+                    }
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+
+            // Aktiven Button stylen
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+        }
+
+        // Seite beim ersten Laden auf Deutsch stellen
+        document.addEventListener("DOMContentLoaded", function() {
+            setLanguage('de');
+        });
+    </script>
+
+</body>
+</html>
